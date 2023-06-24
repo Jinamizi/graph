@@ -38,6 +38,17 @@ class Graph:
     def remove_edge(self, vertex1, vertex2):#remove edge between vertex1 and vertex2
         self.get_vertex(vertex1).remove(vertex2)
 
+    def check_edge(self, vertex1, vertex2):#Determine if an edge exists between two given vertices.
+        return vertex2 in self.get_vertex(vertex1)
+
+    def get_neighbors(self, vertex): #etrieve the adjacent vertices connected to a specific vertex.
+        return self.get_vertex(vertex).get()
+    
+    def path(self, vertex1, vertex2):
+        v1 = self.get_vertex(vertex1)
+        v2 = self.get_vertex(vertex2)
+
+
     def get_vertex(self, value):
         if value not in self:
             raise ValueError(f"{value} is not in list")
@@ -60,3 +71,8 @@ class Graph:
     
     def __repr__(self) -> str:
         return str(self.vertices)
+    
+    @staticmethod
+    def get_path(vertex1, vertex2): #Find a path between two vertices: Discover a path that connects two given vertices in the graph.
+        path = [vertex1]
+        if vertex1 != vertex2:
