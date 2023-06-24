@@ -1,38 +1,38 @@
+#TODO allow Vertex of Vertices i.e a Vertex whose value is other Vertices
+#TODO implement undirectional vertex
+
 from functools import total_ordering
 
 class Vertex:
-    def __init__(self, value) -> None:
+    def __init__(self, value):
         self.value = value
-        self.edges = {}
+        self.edges = set()
 
-    def check(self, value) -> Vertex:
+    def check(self, data):
         if not isinstance(data, Vertex) and type(data) != type(self.value):
             raise TypeError("Invalid data type. Expected {}.".format(type(self.value).__name__))
         elif isinstance(data, Vertex) and type(data.value) != type(self.value):
             raise TypeError("Invalid data type. Expected {}.".format(type(self.value).__name__))
         
-        return value if isinstance(value, Vertex) else Vertex(value)
+        return self.vertex(data)
 
-    def add_edge(self, vertex):
-        #vertices = [self.check(vertice) for vertice in (vertices if isinstance(vertices, (list, tuple, set)) else iter([vertices]))]
-        #condition = lambda obj: obj not in self
-        #vertices = list(filter(self.__contains__, vertices))
-        self.edges.add(self.check(vertex))
+    def add(self, *vertices): 
+        self.edges.update(map(self.check, vertices))
 
-    def remove_edge(self, vertex):
-        if vertex in self: #check if ver
-            self.edges.remove(Vertex.vertex(vertex))
-        raise ValueError(": Vertex.remove(vertex): vertex not in list")
+    def remove(self, *vertices):
+        list(map(self.edges.discard, vertices)) #should remove a list of edges
 
-    def get_vertex(self, value) -> Vertex:
-        for vertice in self.edges:
-            if vertice == value:
-                return vertice
-        return None
+    def get(self, value=None):
+        if value is None:
+            return list(self.edges)
+        if value in self.edges:
+            for vertice in self.edges:
+                if vertice == value:
+                    return vertice
+        raise ValueError(f"{value} is not an edge")
 
     def __hash__(self) -> int:
         return hash(self.value)
-
         
     def __str__(self):
         return str(self.value)
@@ -41,14 +41,15 @@ class Vertex:
         return str(self.value)
 
     def __eq__(self, other):
-        return self.value == Vertex.vertex(other).value
+        return self.value == self.vertex(other).value
     
     def __contains__(self, vertex) -> bool:
-        return Vertex.vertex(vertex) in self.edges
-       # return any(v == vertex for v in self.edges)
+        return self.vertex(vertex) in self.edges
 
-    @classmethod
-    def vertex(cls, value) -> Vertex:
-        return value if isinstance(value, Vertex) else Vertex(value) 
+    @staticmethod
+    def vertex(value): #return a vertex from the value or values
+        return value if isinstance(value, Vertex) else Vertex(value)
+
+     
 
 
