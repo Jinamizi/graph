@@ -2,6 +2,7 @@
 #TODO implement undirectional vertex
 
 from functools import total_ordering
+from typing import Self
 
 class Vertex:
     def __init__(self, value):
@@ -47,7 +48,7 @@ class Vertex:
         return self.vertex(vertex) in self.edges
 
     @staticmethod
-    def vertex(value): #return a vertex from the value or values
+    def vertex(value) -> Self: #return a vertex from the value or values
         return value if isinstance(value, Vertex) else Vertex(value)
 
      
